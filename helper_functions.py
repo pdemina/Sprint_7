@@ -3,6 +3,7 @@ import random
 import string
 import allure
 from data import Data
+from url import URL
 from faker import Faker
 
 # метод регистрации нового курьера возвращает список из логина и пароля
@@ -44,12 +45,12 @@ def register_new_courier_and_return_login_password():
 @allure.step('Выполняем Login метод и получаем id курьера')
 def get_courier_id(login, password):
     payload = {'login': login, 'password': password}
-    courier_id = requests.post(Data.base_url+Data.api_login, payload).json()['id']
+    courier_id = requests.post(URL.base_url+URL.api_login, payload).json()['id']
     return courier_id
 
 @allure.step('Удаляем курьера по id')
 def delete_courier(courier_id):
-    response = requests.delete(Data.base_url + Data.api_delete + str(courier_id))
+    response = requests.delete(URL.base_url + URL.api_delete + str(courier_id))
     return response
 
 @allure.step('Удаляем курьера по логину и паролю')
@@ -60,36 +61,31 @@ def delete_courier_by_login_and_password(login, password):
 @allure.step('Создаем курьера')
 def create_courier(login, password, name):
     payload = {'login': login, 'password': password, 'firstName': name}
-    response = requests.post(Data.base_url + Data.api_courier_creation, payload)
+    response = requests.post(URL.base_url + URL.api_courier_creation, payload)
     return response
 
 @allure.step('Создаем курьера')
 def create_courier_with_payload(payload):
-    response = requests.post(Data.base_url + Data.api_courier_creation, payload)
+    response = requests.post(URL.base_url + URL.api_courier_creation, payload)
     return response
 
 @allure.step('Логин курьером')
 def login_courier(login, password):
-    response = requests.post(Data.base_url + Data.api_login, {'login': login, 'password': password})
+    response = requests.post(URL.base_url + URL.api_login, {'login': login, 'password': password})
     return response
 
 @allure.step('Логин курьером')
 def login_courier_with_payload(payload):
-    response = requests.post(Data.base_url + Data.api_login, payload)
+    response = requests.post(URL.base_url + URL.api_login, payload)
     return response
 
 @allure.step('Создание заказа')
 def create_order(payload):
-    response = requests.post(Data.base_url + Data.api_order, payload)
-    return response
-
-@allure.step('Создание заказа')
-def get_order_of_courier(id_courier):
-    response = requests.get(Data.base_url + Data.api_orders_of_courier+id_courier)
+    response = requests.post(URL.base_url + URL.api_order, payload)
     return response
 
 @allure.step('Получение списка заказов')
 def get_orders_list():
-    response = requests.get(Data.base_url + Data.api_order)
+    response = requests.get(URL.base_url + URL.api_order)
     return response
 
